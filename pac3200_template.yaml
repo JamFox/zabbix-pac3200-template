@@ -1,0 +1,560 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: a37aa5a7dc9248608392f769580388e5
+      name: Powermeter
+  templates:
+    - uuid: 800881be52814d299f3dfb1bb75d2e42
+      template: 'Template PAC3200 Powermeter modbus'
+      name: 'Template PAC3200 Powermeter modbus'
+      groups:
+        - name: Powermeter
+      items:
+        - uuid: c5196d11063b496a8c6ba76bd143452a
+          name: 'Template PAC3200 readings 1-32'
+          key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          delay: 30s
+          trends: '0'
+          value_type: TEXT
+          description: PAC3200
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: ab1eef04c86a4dfe8124d73f49bb3202
+          name: 'Template PAC3200 readings 33-64'
+          key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_33_64},{$MODBUS_COUNT_33_64},{$MODBUS_TYPE}]'
+          delay: 30s
+          history: 7d
+          trends: '0'
+          value_type: TEXT
+          description: PAC3200
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: c1dedad7b2f6461898d0c57dd57c8194
+          name: 'Template PAC3200 energy readings'
+          key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          delay: 10m
+          history: 7d
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: b0142e0d1f524ffa876523f9e68f1f92
+          name: 'Template PAC3200 Active Energy Export Tariff 1'
+          type: DEPENDENT
+          key: pac3200_Active_Energy_Export_Tariff_1
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: Wh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[2]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 062a0c2328f84159baefb2417d526b89
+          name: 'Template PAC3200 Active Energy Export Tariff 2'
+          type: DEPENDENT
+          key: pac3200_Active_Energy_Export_Tariff_2
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: Wh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[3]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 5a892093e97e4b3787836d15540d2b52
+          name: 'Template PAC3200 Active Energy Import Tariff 1'
+          type: DEPENDENT
+          key: pac3200_Active_Energy_Import_Tariff_1
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: Wh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[0]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: f231a96b7200436cb1027f98e352a0e7
+          name: 'Template PAC3200 Active Power a'
+          type: DEPENDENT
+          key: pac3200_Active_Power_a
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: W
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[12]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 642998d8bf624f1faf554655ab2d0abb
+          name: 'Template PAC3200 Active Power b'
+          type: DEPENDENT
+          key: pac3200_Active_Power_b
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: W
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[13]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: bdd97b5dac724f47ab863ae1e339ea46
+          name: 'Template PAC3200 Active Power c'
+          type: DEPENDENT
+          key: pac3200_Active_Power_c
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: W
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[14]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 95336a88e45a414ea51ff46e1dd62156
+          name: 'Template PAC3200 Apparent Energy Tariff 1'
+          type: DEPENDENT
+          key: pac3200_Apparent_Energy_Tariff_1
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VAh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[8]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 42c0193410ba485782db8b4cb87882cb
+          name: 'Template PAC3200 Apparent Energy Tariff 2'
+          type: DEPENDENT
+          key: pac3200_Apparent_Energy_Tariff_2
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VAh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[9]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: fe9e5bfea24f42c6a7d64970a853bf81
+          name: 'Template PAC3200 Apparent Power a'
+          type: DEPENDENT
+          key: pac3200_Apparent_Power_a
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VA
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[9]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 89765d53c2a14f0eb399ab5465004d6f
+          name: 'Template PAC3200 Apparent Power b'
+          type: DEPENDENT
+          key: pac3200_Apparent_Power_b
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VA
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[10]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 64071eb58b794f62b82ca435ad052cc3
+          name: 'Template PAC3200 Apparent Power c'
+          type: DEPENDENT
+          key: pac3200_Apparent_Power_c
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VA
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[11]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: c451bfd318384b2c8a90ccdbf5b2f781
+          name: 'Template PAC3200 Current a'
+          type: DEPENDENT
+          key: pac3200_Current_a
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: A
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[6]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 216ff1c4d815460a900a2e3a17138a3b
+          name: 'Template PAC3200 Current b'
+          type: DEPENDENT
+          key: pac3200_Current_b
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: A
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[7]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: d812991bec904807ac6152e9bcb23a66
+          name: 'Template PAC3200 Current c'
+          type: DEPENDENT
+          key: pac3200_Current_c
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: A
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[8]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 38f83f58b02d42cb8c2839bab3e77ac1
+          name: 'Template PAC3200 Power Factor a'
+          type: DEPENDENT
+          key: pac3200_Power_Factor_a
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[18]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 15e48dab14094985b4eb8993a29a5aba
+          name: 'Template PAC3200 Power Factor b'
+          type: DEPENDENT
+          key: pac3200_Power_Factor_b
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[20]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: bad951706da74583a08c7639aac3c057
+          name: 'Template PAC3200 Power Factor c'
+          type: DEPENDENT
+          key: pac3200_Power_Factor_c
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[20]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: b0d3ca7ecba54a58b17c97337017b2ff
+          name: 'Template PAC3200 Power Frequency'
+          type: DEPENDENT
+          key: pac3200_Power_Frequency
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[28]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: cab11358eeb04ff1a58014a8a22efd2d
+          name: 'Template PAC3200 Reactive Energy Export Tariff 1'
+          type: DEPENDENT
+          key: pac3200_Reactive_Energy_Export_Tariff_1
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[6]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: af013165f9594c4e869c632d84e7f097
+          name: 'Template PAC3200 Reactive Energy Import Tariff 1'
+          type: DEPENDENT
+          key: pac3200_Reactive_Energy_Import_Tariff_1
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[4]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 9a0c631aeb75473292328d9a070710c4
+          name: 'Template PAC3200 Reactive Energy Import Tariff 2'
+          type: DEPENDENT
+          key: pac3200_Reactive_Energy_Import_Tariff_2
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[5]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_ENERGY},{$MODBUS_COUNT_ENERGY},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 02b4527c06c54aaaa6473f9e9a0d24a4
+          name: 'Template PAC3200 Reactive Power a'
+          type: DEPENDENT
+          key: pac3200_Reactive_Power_a
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[15]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 49e0f8870c6d42bab9c6ad7bc54895a9
+          name: 'Template PAC3200 Reactive Power b'
+          type: DEPENDENT
+          key: pac3200_Reactive_Power_b
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[16]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: a837a7651d1f45328a55fa41f883facb
+          name: 'Template PAC3200 Reactive Power c'
+          type: DEPENDENT
+          key: pac3200_Reactive_Power_c
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: varh
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[17]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: ff46f386d2ae477db739c68bcc3a2b6b
+          name: 'Template PAC3200 Total Active Power'
+          type: DEPENDENT
+          key: pac3200_Total_Active_Power
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: W
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[0]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_33_64},{$MODBUS_COUNT_33_64},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 4200b5b877cc41fc9f9f3af50199e4e3
+          name: 'Template PAC3200 Total Apparent Power'
+          type: DEPENDENT
+          key: pac3200_Total_Apparent_Power
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: VA
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[31]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: aaf7238d657c45fe9d3182c7da1fb95d
+          name: 'Template PAC3200 Voltage Va-n'
+          type: DEPENDENT
+          key: pac3200_Voltage_Va-n
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: V
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[0]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: 2d63a56060534471b06ef1dac3f4a6de
+          name: 'Template PAC3200 Voltage Vb-n'
+          type: DEPENDENT
+          key: pac3200_Voltage_Vb-n
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: V
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[1]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+        - uuid: f322ae4a5b4f4db98842ba0a3147f589
+          name: 'Template PAC3200 Voltage Vc-n'
+          type: DEPENDENT
+          key: pac3200_Voltage_Vc-n
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: V
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[2]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS_1_32},{$MODBUS_COUNT_1_32},{$MODBUS_TYPE}]'
+          tags:
+            - tag: Application
+              value: PowerMeter
+      macros:
+        - macro: '{$MODBUS_ADDRESS}'
+          value: '801'
+        - macro: '{$MODBUS_ADDRESS_1_12}'
+          value: '1'
+        - macro: '{$MODBUS_ADDRESS_1_32}'
+          value: '1'
+        - macro: '{$MODBUS_ADDRESS_33_64}'
+          value: '65'
+        - macro: '{$MODBUS_ADDRESS_ENERGY}'
+          value: '801'
+        - macro: '{$MODBUS_COUNT}'
+          value: '10'
+        - macro: '{$MODBUS_COUNT_1_12}'
+          value: '12'
+        - macro: '{$MODBUS_COUNT_1_32}'
+          value: '32'
+        - macro: '{$MODBUS_COUNT_33_64}'
+          value: '32'
+        - macro: '{$MODBUS_COUNT_ENERGY}'
+          value: '10'
+        - macro: '{$MODBUS_ENDPOINT}'
+        - macro: '{$MODBUS_FUNCTION}'
+          value: '3'
+        - macro: '{$MODBUS_SLAVEID}'
+          value: '1'
+        - macro: '{$MODBUS_TYPE}'
+          value: double
